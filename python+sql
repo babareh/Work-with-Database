@@ -1,0 +1,68 @@
+import tkinter
+import sqlite3
+window=tkinter.Tk()
+window.title("Work with Database")
+
+def create_db():
+    mydb=sqlite3.connect("myDataBase.db")
+    return mydb
+
+def add_db():
+    id_number=textbox_id.get()
+    fName=textbox_fName.get()
+    lName=textbox_lName.get()
+    age=textbox_age.get()
+    salary=textbox_salary.get()
+    mydb=create_db()
+    operator=mydb.cursor()
+    operator.execute("create table if not exists information(id integer primary key, first_name text, last_name text,age integer,salary integer)")
+    mydb.commit()
+    operator.execute(f"insert into information values({id_number},'{fName}','{lName}',{age},{salary})")
+    mydb.commit()
+    textbox_id.delete(0,tkinter.END)
+    textbox_fName.delete(0,tkinter.END)
+    textbox_lName.delete(0,tkinter.END)
+    textbox_age.delete(0,tkinter.END)
+    textbox_salary.delete(0,tkinter.END)
+
+
+textbox_id=tkinter.Entry(window, width=35)
+textbox_fName=tkinter.Entry(window, width=35)
+textbox_lName=tkinter.Entry(window, width=35)
+textbox_age=tkinter.Entry(window, width=35)
+textbox_salary=tkinter.Entry(window, width=35)
+textbox_export=tkinter.Entry(window, width=35)
+textbox_exportdata=tkinter.Entry(window, width=35)
+
+label_id=tkinter.Label(window, text="Enter Your ID:")
+label_fName=tkinter.Label(window, text="Enter Your First Name:")
+label_lName=tkinter.Label(window, text="Enter Your Last Name:")
+label_age=tkinter.Label(window, text="Enter Your Age:")
+label_salary=tkinter.Label(window, text="Enter Your salary:")
+label_export=tkinter.Label(window, text="Export records value more than:")
+label_exportdata=tkinter.Label(window, text="Export data:")
+
+btn_add=tkinter.Button(window,text="Add to Database",command=add_db)
+btn_export=tkinter.Button(window,text="Export Records",command=("select {id_number},'{fName}','{lName}' from information where {salary}>5000"))
+
+textbox_id.grid(row=1,column=0)
+textbox_fName.grid(row=3,column=0)
+textbox_lName.grid(row=5,column=0)
+textbox_age.grid(row=7,column=0)
+textbox_salary.grid(row=9,column=0)
+textbox_export.grid(row=12,column=0)
+
+label_id.grid(row=0,column=0)
+label_fName.grid(row=2,column=0)
+label_lName.grid(row=4,column=0)
+label_age.grid(row=6,column=0)
+label_salary.grid(row=8,column=0)
+label_export.grid(row=11,column=0)
+label_exportdata.grid(row=13,column=0)
+
+label_exportdata.grid(row=16,column=0)
+
+btn_add.grid(row=10,column=0)
+btn_export.grid(row=15,column=0)
+
+window.mainloop() 
